@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">PM1E10372</string>
+    <string-array name="paisArray">
+        <item>GUATEMALA +502</item>
+        <item>EL SALVADOR +503</item>
+        <item>HONDURAS +504</item>
+        <item>NICARAGUA +505</item>
+        <item>COSTA RICA +506</item>
+        <item>PANAMA +507</item>
+    </string-array>
+
+
+    <string name="LblRegistro">Registrar Contacto</string>
+    <string name="fotoPerfil">Foto de Perfil del usuario</string>
+    <string name="pais">Pais</string>
+    <string name="nombre">Nombre</string>
+    <string name="nota">Nota</string>
+    <string name="telefono">Telefono</string>
+    <string name="salvarContacto">Salvar Contacto</string>
+    <string name="Contactos">Contactos Salvados</string>
+
+
+</resources>
