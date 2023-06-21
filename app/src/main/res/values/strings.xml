@@ -18,6 +18,11 @@
     <string name="telefono">Telefono</string>
     <string name="salvarContacto">Salvar Contacto</string>
     <string name="Contactos">Contactos Salvados</string>
+    <string name="actualizarContacto">Actualizar Contacto</string>
+    <string name="eliminarContacto">Eliminar Contacto</string>
+    <string name="verImagen">Ver Imagen</string>
+    <string name="compartirContacto">Compartir Contacto</string>
+
 
 
 </resources>

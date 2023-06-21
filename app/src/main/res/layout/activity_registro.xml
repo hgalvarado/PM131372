@@ -13,6 +13,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
+        android:src="@drawable/imagenpordefecto"
         android:contentDescription="@string/fotoPerfil"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -78,8 +79,8 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:ems="10"
-        android:hint="@string/nombre"
-        android:inputType="text"
+        android:hint="@string/telefono"
+        android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lblRegistrarTelefono" />
@@ -117,7 +118,9 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="10dp"
         android:ems="10"
+        android:inputType="textMultiLine"
         android:gravity="start|top"
+        android:lines="5"
         android:hint="@string/nota"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -150,7 +153,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txtARegistrarNota" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnVisuallizarContactos"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -162,7 +165,7 @@
         app:layout_constraintTop_toBottomOf="@+id/btnSalvarContacto" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/btnSeleccionarImagen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="130dp"
