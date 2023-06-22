@@ -13,6 +13,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,10 +21,14 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.hgalvarado.pm1e10372.Modelo.ActivityImagen;
 import com.hgalvarado.pm1e10372.Modelo.Contactos;
 import com.hgalvarado.pm1e10372.configuraciones.SQLiteConexion;
 import com.hgalvarado.pm1e10372.configuraciones.Transacciones;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ActivityVistaRegistro extends AppCompatActivity {
@@ -41,7 +46,7 @@ public class ActivityVistaRegistro extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vista_registro);
 
-        llamar = (Button) findViewById(R.id.btnCompartirContacto);
+
 
         conexion = new SQLiteConexion(this, Transacciones.nameDatabase,null,2);
         listaContactos =(ListView)findViewById(R.id.ListaContactos);
@@ -55,7 +60,7 @@ public class ActivityVistaRegistro extends AppCompatActivity {
                 String selectedItem = (String) parent.getItemAtPosition(position);
                 // Realizar alguna acción con el elemento seleccionado
 //                mostrarDialogo(lista.get(position).getNombre(),lista.get(position).getTelefono());
-                dialogoOpciones(lista.get(position).getNombre(),lista.get(position).getTelefono());
+                dialogoOpciones(lista.get(position).getNombre(),lista.get(position).getTelefono(), String.valueOf(lista.get(position).getId()),position);
             }
         });
     }
@@ -87,32 +92,13 @@ public class ActivityVistaRegistro extends AppCompatActivity {
     private void fillList() {
         ArregloContactos = new ArrayList<String>();
         for (int i = 0; i < lista.size(); i++) {
-            ArregloContactos.add(lista.get(i).getNombre() + " | "
+            ArregloContactos.add(lista.get(i).getId() + " | "
+                    + lista.get(i).getNombre() + " | "
                     + lista.get(i).getTelefono()
             );
         }
     }
-/* Se realizo una pequeña modificacion
-    private void mostrarDialogo(String nombre, String telefono){
-        // Realizar alguna acción con el elemento seleccionado
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Realizar la llamada").setMessage("¿Desea llamar a " + nombre +"?").setPositiveButton("Llamar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                hacerLlamada(telefono);
-            }
-        }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Acción de cancelar
-                dialog.dismiss();
-            }
-        });
-        builder.create().show();
-    }
-*/
-
-    private void dialogoOpciones(String nombre,String telefono){
+    private void dialogoOpciones(String nombre,String telefono,String id,int posicion){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String[] elementos = {"Llamar a "+ nombre,"Compartir Contacto", "Ver Imagen", "Eliminar Contacto","Editar Contacto"};
         builder.setTitle("Acciones")
@@ -120,9 +106,32 @@ public class ActivityVistaRegistro extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         // The 'which' argument contains the index position
                         String elementoSeleccionado = elementos[which];
-                        Toast.makeText(getApplicationContext(),""+elementoSeleccionado,Toast.LENGTH_LONG).show();
-                        if (elementoSeleccionado == elementos[0]){
+
+                        if (elementoSeleccionado == elementos[0]){ //Llamar
                             hacerLlamada(telefono);
+                        }
+                        if (elementoSeleccionado == elementos[1]){ //Compartir Contacto
+                            Intent compartirIntent = new Intent(Intent.ACTION_SEND);
+                            compartirIntent.setType("text/plain");
+                            compartirIntent.putExtra(Intent.EXTRA_TEXT,"Contacto: "+nombre +" "+  telefono);
+                            startActivity(Intent.createChooser(compartirIntent, "Compartir usando"));
+                        }
+                        if (elementoSeleccionado == elementos[2]){ //Ver Imagen
+                            Intent intent = new Intent(getApplicationContext(), ActivityImagen.class);
+                            intent.putExtra("id", id);
+                            startActivity(intent);
+                        }
+                        if (elementoSeleccionado==elementos[3]){//Eliminar Contacto
+                            EliminarContacto(id);
+                        }
+                        if (elementoSeleccionado==elementos[4]){
+                            Intent intent = new Intent(getApplicationContext(), ActivityEditarContacto.class);
+                            intent.putExtra("id", id);
+                            intent.putExtra("pais",lista.get(posicion).getPais());
+                            intent.putExtra("nombre",lista.get(posicion).getNombre());
+                            intent.putExtra("telefono",lista.get(posicion).getTelefono());
+                            intent.putExtra("nota",lista.get(posicion).getNota());
+                            startActivity(intent);
                         }
                     }
                 });
@@ -140,5 +149,46 @@ public class ActivityVistaRegistro extends AppCompatActivity {
             startActivity(intent);
         }
     }
+    private void EliminarContacto(String identificador) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Eliminar contacto");
+        builder.setMessage("¿Estás seguro de que deseas eliminar este contacto?");
+        builder.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Obtén una instancia de la base de datos SQLite
+                SQLiteDatabase db = conexion.getWritableDatabase();
 
+                // Definir la tabla y la cláusula WHERE para eliminar el dato
+                String tableName = "contactos";
+                String whereClause = "id = ?";
+                String[] whereArgs = { identificador };
+
+                // Ejecutar la sentencia DELETE
+                int rowsDeleted = db.delete(tableName, whereClause, whereArgs);
+
+                // Verificar la cantidad de filas eliminadas
+                if (rowsDeleted > 0) {
+                    // El dato se eliminó exitosamente
+                    Toast.makeText(getApplicationContext(),"CONTACTO ELIMINADO",Toast.LENGTH_LONG).show();
+                } else {
+                    // No se encontró el dato o no se pudo eliminar
+                    Toast.makeText(getApplicationContext(),"NO SE ELIMINO EL CONTACTO",Toast.LENGTH_LONG).show();
+                }
+
+                // Cerrar la base de datos
+                db.close();
+                Intent intent = new Intent(getApplicationContext(), ActivityVistaRegistro.class);
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 }

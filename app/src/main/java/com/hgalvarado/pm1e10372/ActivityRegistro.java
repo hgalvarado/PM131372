@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,13 +50,28 @@ public class ActivityRegistro extends AppCompatActivity {
         btnSeleccionarImagen = (ImageButton) findViewById(R.id.btnSeleccionarImagen);
 
 
-
-        //Llenar datos de Spinner o combobox
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.paisArray, android.R.layout.simple_spinner_item);
+        // Obtén los nombres de los países y los números de área desde los recursos
+        String[] nombresPaises = getResources().getStringArray(R.array.paisArray);
+        String[] numerosArea = getResources().getStringArray(R.array.numeros_area);
+        // Crea un ArrayAdapter utilizando los nombres de los países
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, nombresPaises);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Asigna el ArrayAdapter al Spinner
         cmbRegistrarPais.setAdapter(adapter);
         cmbRegistrarPais.setSelection(2);//Seleccionar un valor por defecto
+        // Agrega un listener al Spinner para actualizar el EditText cuando se selecciona un país
+        cmbRegistrarPais.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String numeroArea = numerosArea[position];
+                txtRegistrarTelefono.setText(numeroArea);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // No se seleccionó ningún país
+                txtRegistrarTelefono.setText("");
+            }
+        });
 
         //Seleccionar Imagen
         btnSeleccionarImagen.setOnClickListener(new View.OnClickListener() {
@@ -121,6 +137,7 @@ public class ActivityRegistro extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
 
+
         SQLiteConexion conexion = new SQLiteConexion(this, Transacciones.nameDatabase,null,2);
         SQLiteDatabase db= conexion.getWritableDatabase();
         ContentValues valores = new ContentValues();
@@ -138,8 +155,9 @@ public class ActivityRegistro extends AppCompatActivity {
     }
     private void CleanScreen() {
         txtRegistrarNombre.setText("");
+        imgvFotoPerfil.setImageResource(R.drawable.imagenpordefecto);
         cmbRegistrarPais.setSelection(2);
-        txtRegistrarTelefono.setText("");
+        txtRegistrarTelefono.setText("+504");
         txtRegistrarNota.setText("");
     }
 

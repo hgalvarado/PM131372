@@ -14,40 +14,12 @@
         android:ems="10"
         android:hint="Buscar Contacto"
         android:inputType="text"
-        android:layout_margin="10dp"
+        android:layout_margin="15dp"
         android:textAlignment="center" />
 
     <ListView
         android:id="@+id/ListaContactos"
         android:layout_width="match_parent"
-        android:layout_height="399dp" />
-
-    <Button
-        android:id="@+id/btnCompartirContacto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="@string/compartirContacto" />
-
-    <Button
-        android:id="@+id/btnVerImagen"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="@string/verImagen" />
-
-    <Button
-        android:id="@+id/btnEliminarContacto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="@string/eliminarContacto" />
-
-    <Button
-        android:id="@+id/btnActualizarContacto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="@string/actualizarContacto" />
+        android:layout_height="769dp" />
 
 </LinearLayout>

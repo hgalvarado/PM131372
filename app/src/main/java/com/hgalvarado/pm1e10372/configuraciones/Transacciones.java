@@ -14,7 +14,6 @@ public class Transacciones {
     public static final String nombres = "nombres";
     public static final String telefono = "telefono";
     public static final String nota = "nota";
-//    public static final byte[] imagen =new byte[0];
 
     //DDL Create and Drop
     public static final String CreateTableContactos = "CREATE TABLE contactos " +
@@ -22,8 +21,10 @@ public class Transacciones {
 
     public static final String DropTableContactos = "DROP TABLE IF EXISTS " + tableContactos;
 
-
     //DML
     public static final String SelectTableContactos = "SELECT * FROM " + tableContactos;
+
+
+
 
 }

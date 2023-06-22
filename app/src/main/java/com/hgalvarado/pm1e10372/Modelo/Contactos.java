@@ -7,12 +7,15 @@ public class Contactos {
     private String telefono;
     private String nota;
 
+
+
     public Contactos(Integer id, String pais, String nombre, String telefono, String nota) {
         this.id = id;
         this.pais = pais;
         this.nombre = nombre;
         this.telefono = telefono;
         this.nota = nota;
+
     }
 
     public Contactos() {
@@ -57,4 +60,5 @@ public class Contactos {
     public void setPais(String pais) {
         this.pais = pais;
     }
+
 }

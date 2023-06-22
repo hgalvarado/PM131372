@@ -8,6 +8,15 @@
         <item>COSTA RICA +506</item>
         <item>PANAMA +507</item>
     </string-array>
+    <string-array name="numeros_area">
+        <item>+502 </item>
+        <item>+503 </item>
+        <item>+504 </item>
+        <item>+505 </item>
+        <item>+506 </item>
+        <item>+507 </item>
+
+    </string-array>
 
 
     <string name="LblRegistro">Registrar Contacto</string>
@@ -22,7 +31,6 @@
     <string name="eliminarContacto">Eliminar Contacto</string>
     <string name="verImagen">Ver Imagen</string>
     <string name="compartirContacto">Compartir Contacto</string>
-
 
 
 </resources>
